@@ -21,13 +21,13 @@ const moduleFederationConfig = {
 }
 
 module.exports = (_, argv) => ({
-  cache: false,
-  devtool: 'source-map',
-  mode: 'development',
   output: {
     publicPath: "http://localhost:9000/",
     clean: true
   },
+  cache: false,
+  devtool: 'source-map',
+  mode: 'development',
 
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],

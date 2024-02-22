@@ -10,6 +10,7 @@ const moduleFederationConfig = {
   filename: "remoteEntry.js",
   remotes: {
     "mfe-ui": "ui@http://localhost:9000/remoteEntry.js",
+    "dashboard": "dashboard@http://localhost:8001/remoteEntry.js"
   },
   shared: {
     ...deps,

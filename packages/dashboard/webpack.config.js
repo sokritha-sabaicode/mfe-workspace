@@ -1,11 +1,43 @@
+const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const { NativeFederationTypeScriptHost } = require('@module-federation/native-federation-typescript/webpack')
+const {NativeFederationTypeScriptRemote} = require('@module-federation/native-federation-typescript/webpack')
+
 const Dotenv = require('dotenv-webpack');
 const deps = require("./package.json").dependencies;
+
+
+const moduleFederationConfig = {
+  name: "dashboard",
+  filename: "remoteEntry.js",
+  remotes: {
+    "mfe-ui": "ui@http://localhost:9000/remoteEntry.js",
+  },
+  exposes: {
+    "./app": "./src/App"
+  },
+  shared: {
+    ...deps,
+    react: {
+      singleton: true,
+      requiredVersion: deps.react,
+    },
+    "react-dom": {
+      singleton: true,
+      requiredVersion: deps["react-dom"],
+    },
+  },
+}
+
 module.exports = (_, argv) => ({
   output: {
     publicPath: "http://localhost:8001/",
+    clean: true
   },
+  cache: false,
+  mode: 'development',
+  devtool: 'source-map',
 
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
@@ -13,7 +45,11 @@ module.exports = (_, argv) => ({
 
   devServer: {
     port: 8001,
+    static: {
+      directory: path.join(__dirname, 'dist')
+    },
     historyApiFallback: true,
+    liveReload: true
   },
 
   module: {
@@ -40,26 +76,12 @@ module.exports = (_, argv) => ({
   },
 
   plugins: [
-    new ModuleFederationPlugin({
-      name: "dashboard",
-      filename: "remoteEntry.js",
-      remotes: {},
-      exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
-      },
-    }),
+    new ModuleFederationPlugin(moduleFederationConfig),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
+    NativeFederationTypeScriptHost({moduleFederationConfig}),
+    NativeFederationTypeScriptRemote({moduleFederationConfig, compiledTypesFolder: ""}),
     new Dotenv()
   ],
 });

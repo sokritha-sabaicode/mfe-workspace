@@ -1,19 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-
 import "./index.css";
+import React from "react";
 
-const App = () => (
+import {Button} from 'mfe-ui/atoms'
+
+interface standalone {
+  isStandalone?: boolean
+}
+
+const App: React.FC<standalone> = ({isStandalone = true}) => (
   <div className="max-w-6xl mx-auto mt-10 text-3xl">
-    <div>Name: dashboard</div>
-    <div>Framework: react</div>
-    <div>Language: TypeScript</div>
-    <div>CSS: Tailwind</div>
+    <p>This is dashboard Page: {isStandalone && `standalone`}</p>
+    <Button hanldeOnClick={()=> console.log('Dashboard is clicking')}>Click Me DashBoard!</Button>
   </div>
 );
-const rootElement = document.getElementById("app");
-if (!rootElement) throw new Error("Failed to find the root element");
 
-const root = ReactDOM.createRoot(rootElement as HTMLElement);
-
-root.render(<App />);
+export default App;
