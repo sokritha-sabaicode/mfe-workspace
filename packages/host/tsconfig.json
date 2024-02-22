@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "module": "ES2022",
+    "paths": {
+      "*": ["./@mf-types/*"]
+    }
+  },
+  "include": [
+    "src/**/*" // *** The files TypeScript should type check ***
+  ],
+  "exclude": ["node_modules", "build", "dist"]
+}

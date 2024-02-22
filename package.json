@@ -1,0 +1,23 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "author": "catkod",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "storybook": "yarn --cwd ui storybook",
+    "ui": "yarn workspace ui start",
+    "host": "yarn workspace host start",
+    "dashboard": "yarn workspace dashboard start",
+    "start": "run-p host ui dashboard"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
